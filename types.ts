@@ -17,7 +17,8 @@ export type Props = {
       homepage: string | null;
       topics: [];
     }
-  ]
+  ],
+  reposdata: []
 };
 
 export type Repo = {
