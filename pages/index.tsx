@@ -12,14 +12,13 @@ import Works from "../components/works";
 export const getStaticProps: GetStaticProps = async () => {
   const [userRes, reposRes] = await Promise.all([
     fetch("https://api.github.com/users/arthurpeixotomelo"),
-    fetch("https://api.github.com/users/arthurpeixotomelo/repos"
-    // "https://api.github.com/user/repos"
-    // , {
-    //   method: "get",
-    //   headers: {
-    //     Authorization: "token mytoken",
-    //   }
-    // }
+    fetch("https://api.github.com/user/repos"
+    , {
+      method: "get",
+      headers: {
+        Authorization: (process.env.GIT_TOKEN as string),
+      }
+    }
     ),
   ]);
   const [userdata, reposdata] = await Promise.all([
@@ -45,7 +44,6 @@ export const getStaticProps: GetStaticProps = async () => {
         followers,
         following,
       }))(userdata),
-      //reposdata: reposdata,
       repos: reposdata.map((item: any) => ({
         name: item.name,
         private: item.private,
@@ -57,7 +55,6 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const Home: NextPage<Props> = ({ user, repos }) => {
-  //console.log(reposdata)
   const [active, setActive] = useState("Tech");
   function handleChange(e: MouseEvent) {
     setActive((e.target as HTMLInputElement).id);
@@ -150,12 +147,12 @@ const Home: NextPage<Props> = ({ user, repos }) => {
               </div>
             </div>
             <div className={styles.button}>
-              <p>
-                <a
+            <a
                   href="/curriculo.pdf"
                   download="Curriculo - Arthur Peixoto Melo"
                   target="_blank"
-                ></a>
+                >
+              <p>
                 Curriculo
                 <Image
                   src="/images/download.svg"
@@ -165,6 +162,7 @@ const Home: NextPage<Props> = ({ user, repos }) => {
                   height={24}
                 />
               </p>
+            </a>
             </div>
             <div className={styles.button}>
               <span>Theme</span>
@@ -287,7 +285,7 @@ const Home: NextPage<Props> = ({ user, repos }) => {
               return <Projects key={i} repo={repo} />;
             })}
       </section>
-      {/* <section className={styles.section}>
+      <section className={styles.section}>
         {active == "Works" &&
           repos
             .slice(1)
@@ -297,7 +295,7 @@ const Home: NextPage<Props> = ({ user, repos }) => {
             .map((repo, i) => {
               return <Works key={i} repo={repo} />;
             })}
-      </section> */}
+      </section>
     </div>
   );
 };

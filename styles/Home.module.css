@@ -70,7 +70,7 @@
   display: none;
 }
 
-.button p {
+.button a {
   width: 100%;
   display: flex;
   align-items: center;
@@ -78,6 +78,10 @@
   font-size: 1.25rem;
   gap: var(--mspace1);
   color: var(--primarycolor);
+}
+
+.button a p {
+  display: contents;
 }
 
 .toggle {
