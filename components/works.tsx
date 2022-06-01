@@ -1,5 +1,5 @@
 import { Repo } from "../types"
-import styles from "../styles/works.module.css";
+import styles from "../styles/Works.module.css";
 
 const Works = ({repo}: Repo) => {
   return (

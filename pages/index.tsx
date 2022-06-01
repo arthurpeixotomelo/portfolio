@@ -3,7 +3,7 @@ import { GetStaticProps, NextPage } from "next";
 import { Props } from "../types";
 
 import Image from "next/image";
-import styles from "../styles/home.module.css";
+import styles from "../styles/Home.module.css";
 
 import Tech from "../components/tech";
 import Projects from "../components/projects";

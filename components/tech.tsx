@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "../styles/tech.module.css";
+import styles from "../styles/Tech.module.css";
 
 const Tech = () => {
   return (

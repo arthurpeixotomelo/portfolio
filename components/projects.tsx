@@ -1,6 +1,6 @@
 import { Repo } from "../types"
 import Link from "next/link"
-import styles from "../styles/projects.module.css";
+import styles from "../styles/Projects.module.css";
 
 const Projects = ({repo}: Repo) => {
   return (
