@@ -16,10 +16,9 @@ export const getStaticProps: GetStaticProps = async () => {
     , {
       method: "get",
       headers: {
-        Authorization: (process.env.GIT_TOKEN as string),
+        Authorization: (process.env.GIT_TOKEN as string)
       }
-    }
-    ),
+    })
   ]);
   const [userdata, reposdata] = await Promise.all([
     userRes.json(),
@@ -51,6 +50,7 @@ export const getStaticProps: GetStaticProps = async () => {
         topics: item.topics,
       })),
     },
+    revalidate: 60 * 60 * 24 * 7,
   };
 };
 
@@ -150,7 +150,6 @@ const Home: NextPage<Props> = ({ user, repos }) => {
             <a
                   href="/curriculo.pdf"
                   download="Curriculo - Arthur Peixoto Melo"
-                  target="_blank"
                 >
               <p>
                 Curriculo
@@ -280,7 +279,7 @@ const Home: NextPage<Props> = ({ user, repos }) => {
       <section className={styles.section}>
         {active == "Projects" &&
           repos.slice(1).filter(repo => {
-              return repo.private == false;
+              return (!repo.private);
             }).map((repo, i) => {
               return <Projects key={i} repo={repo} />;
             })}

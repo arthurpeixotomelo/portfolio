@@ -1,26 +1,27 @@
-import { Repo } from "../types"
-import Link from "next/link"
-import styles from "../styles/Projects.module.css";
+import { Repo } from "../types";
+import styles from "../styles/Iframe.module.css";
 
-const Projects = ({repo}: Repo) => {
+const Projects = ({ repo }: Repo) => {
   return (
-    <section>
-      <h3>{repo.name}</h3>
-      {/* <div>
-        <div title="Thumbnail of repos.name" >
-          <iframe src="/" frameborder="0"></iframe>
-        </div>
+    <div className={styles.card}>
+      <div
+        className={styles.thumbnail}
+        title={`Pré visualização de ${repo.name}`}
+      >
+        <iframe src={`${repo.homepage}`} frameBorder="0"></iframe>
+      </div>
+      <div className={styles.link}>
+        <a href={`${repo.homepage}`} target="_blank" rel="noreferrer">
+          {repo.name}
+        </a>
         <div>
-          <Link href="repos.homepage">
-            <a>{repos.name}</a>
-           </Link>
-          <div>
-            repos.topics
-          </div>
+          {repo.topics.map((topic, i) => {
+            return <span key={i}>{topic}</span>;
+          })}
         </div>
-      </div> */}
-    </section>
-  )
-}
+      </div>
+    </div>
+  );
+};
 
-export default Projects
+export default Projects;

@@ -188,17 +188,12 @@
   transition: all 0.6s cubic-bezier(0.24, -0.3, 0.52, 1.25);
 }
 
-.main {
-  contain: content;
-}
-
 .section {
-  contain: content;
-  margin: var(--mspace2)  auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: space-around;
+  gap: 0 var(--mspace3);
 }
 
 @media (min-width: 500px) {
@@ -226,6 +221,11 @@
   .switch input[type=radio]:nth-of-type(3):checked ~ .slider {
     transform: translateX(294%);
   }
+
+  .section {
+    flex-direction: initial;
+    flex-wrap: wrap;
+  }
 }
 
 @media (min-width: 900px) {
@@ -236,7 +236,6 @@
   .header {
     flex-direction: unset;
     gap: var(--space2);
-    margin: var(--space3) 0;
   }
 
   .profile {
@@ -268,9 +267,5 @@
 
   .cards p {
     margin: var(--space1) 15%;
-  }
-
-  .section {
-    flex-direction: unset;
   }
 }
