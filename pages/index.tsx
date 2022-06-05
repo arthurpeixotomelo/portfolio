@@ -1,64 +1,60 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useState, useEffect } from "react";
 import { GetStaticProps, NextPage } from "next";
-import { Props } from "../types";
-
+import { useRouter } from "next/router";
 import Image from "next/image";
+
+import { Props } from "../types";
 import styles from "../styles/Home.module.css";
-
 import Tech from "../components/tech";
-import Projects from "../components/projects";
-import Works from "../components/works";
-
-export const getStaticProps: GetStaticProps = async () => {
-  const [userRes, reposRes] = await Promise.all([
-    fetch("https://api.github.com/users/arthurpeixotomelo"),
-    fetch("https://api.github.com/user/repos"
-    , {
-      method: "get",
-      headers: {
-        Authorization: (process.env.GIT_TOKEN as string)
-      }
-    })
-  ]);
-  const [userdata, reposdata] = await Promise.all([
-    userRes.json(),
-    reposRes.json(),
-  ]);
-  return {
-    props: {
-      user: (({
-        avatar_url,
-        name,
-        bio,
-        location,
-        public_repos,
-        followers,
-        following,
-      }) => ({
-        avatar_url,
-        name,
-        bio,
-        location,
-        public_repos,
-        followers,
-        following,
-      }))(userdata),
-      repos: reposdata.map((item: any) => ({
-        name: item.name,
-        private: item.private,
-        homepage: item.homepage,
-        topics: item.topics,
-      })),
-    },
-    revalidate: 60 * 60 * 24 * 7,
-  };
-};
+import Iframe from "../components/iframe";
 
 const Home: NextPage<Props> = ({ user, repos }) => {
+  const ptBR = {
+    language: "Idioma",
+    curriculum: "Currículo",
+    theme: "Tema",
+    degree: "Ciência de Dados",
+    repository: "Repositórios",
+    followers: "Seguidores",
+    following: "Seguindo",
+    projects: "Projetos",
+    works: "Trabalhos",
+  };
+  const enUS = {
+    language: "Language",
+    curriculum: "Curriculum",
+    theme: "Theme",
+    degree: "Data Science",
+    repository: "Repositories",
+    followers: "Followers",
+    following: "Following",
+    projects: "Projects",
+    works: "Works",
+  };
+  const router = useRouter();
+  const { locale } = router;
+  const traducao = locale == "pt-BR" ? ptBR : enUS;
+  const changeLang = () => {
+    switch (locale) {
+      case "pt-BR":
+        router.push("/", "/", { locale: "en-US" });
+        break;
+      case "en-US":
+        router.push("/", "/", { locale: "pt-BR" });
+        break;
+    }
+  };
+  const [theme, setTheme] = useState("dark");
+  const changeTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
+  useEffect(() => {
+    document.body.dataset.theme = theme;
+  }, [theme]);
   const [active, setActive] = useState("Tech");
-  function handleChange(e: MouseEvent) {
+  const changeComponent = (e: MouseEvent) => {
     setActive((e.target as HTMLInputElement).id);
-  }
+  };
   return (
     <div className={styles.background}>
       <header className={styles.header}>
@@ -133,9 +129,9 @@ const Home: NextPage<Props> = ({ user, repos }) => {
         <div className={styles.aside}>
           <div className={styles.buttons}>
             <div className={styles.button}>
-              <span>Language</span>
+              <span>{traducao.language}</span>
               <div className={styles.toggle}>
-                <input type="checkbox" id="language" />
+                <input type="checkbox" id="language" onClick={changeLang} />
                 <label htmlFor="language">
                   <Image
                     src="/images/language.svg"
@@ -147,26 +143,26 @@ const Home: NextPage<Props> = ({ user, repos }) => {
               </div>
             </div>
             <div className={styles.button}>
-            <a
-                  href="/curriculo.pdf"
-                  download="Curriculo - Arthur Peixoto Melo"
-                >
-              <p>
-                Curriculo
-                <Image
-                  src="/images/download.svg"
-                  alt="Download"
-                  layout="fixed"
-                  width={24}
-                  height={24}
-                />
-              </p>
-            </a>
+              <a
+                href="/curriculo.pdf"
+                download="Curriculo - Arthur Peixoto Melo"
+              >
+                <p>
+                {traducao.curriculum}
+                  <Image
+                    src="/images/download.svg"
+                    alt="Download"
+                    layout="fixed"
+                    width={24}
+                    height={24}
+                  />
+                </p>
+              </a>
             </div>
             <div className={styles.button}>
-              <span>Theme</span>
+              <span>{traducao.theme}</span>
               <div className={styles.toggle}>
-                <input type="checkbox" id="Theme" />
+                <input type="checkbox" id="Theme" onClick={changeTheme} />
                 <label htmlFor="Theme">
                   <Image
                     src="/images/theme.svg"
@@ -188,7 +184,7 @@ const Home: NextPage<Props> = ({ user, repos }) => {
                   width={24}
                   height={24}
                 />
-                <span>Ciência de Dados</span>
+                {traducao.degree}
               </p>
               <p>
                 <Image
@@ -220,7 +216,7 @@ const Home: NextPage<Props> = ({ user, repos }) => {
                   width={24}
                   height={24}
                 />
-                {user.public_repos - 1} Repositórios
+                {user.public_repos - 1} {traducao.repository}
               </p>
               <p>
                 <Image
@@ -230,7 +226,7 @@ const Home: NextPage<Props> = ({ user, repos }) => {
                   width={24}
                   height={24}
                 />
-                {user.followers} Seguidores
+                {user.followers} {traducao.followers}
               </p>
               <p>
                 <Image
@@ -240,7 +236,7 @@ const Home: NextPage<Props> = ({ user, repos }) => {
                   width={24}
                   height={24}
                 />
-                {user.following} Seguindo
+                {user.following} {traducao.following}
               </p>
             </div>
           </div>
@@ -251,37 +247,38 @@ const Home: NextPage<Props> = ({ user, repos }) => {
                 name="section"
                 id="Tech"
                 defaultChecked
-                onClick={handleChange}
+                onClick={changeComponent}
               />
               <label htmlFor="Tech">Tech</label>
               <input
                 type="radio"
                 name="section"
                 id="Projects"
-                onClick={handleChange}
+                onClick={changeComponent}
               />
-              <label htmlFor="Projects">Projetos</label>
+              <label htmlFor="Projects">{traducao.projects}</label>
               <input
                 type="radio"
                 name="section"
                 id="Works"
-                onClick={handleChange}
+                onClick={changeComponent}
               />
-              <label htmlFor="Works">Trabalhos</label>
+              <label htmlFor="Works">{traducao.works}</label>
               <div className={styles.slider}></div>
             </div>
           </nav>
         </div>
       </header>
-      <main className={styles.main}>
-        {active == "Tech" && <Tech />}
-      </main>
+      <main className={styles.main}>{active == "Tech" && <Tech />}</main>
       <section className={styles.section}>
         {active == "Projects" &&
-          repos.slice(1).filter(repo => {
-              return (!repo.private);
-            }).map((repo, i) => {
-              return <Projects key={i} repo={repo} />;
+          repos
+            .slice(1)
+            .filter(repo => {
+              return !repo.private;
+            })
+            .map((repo, i) => {
+              return <Iframe key={i} repo={repo} />;
             })}
       </section>
       <section className={styles.section}>
@@ -292,11 +289,56 @@ const Home: NextPage<Props> = ({ user, repos }) => {
               return repo.private == true;
             })
             .map((repo, i) => {
-              return <Works key={i} repo={repo} />;
+              return <Iframe key={i} repo={repo} />;
             })}
       </section>
     </div>
   );
+};
+
+export const getStaticProps: GetStaticProps = async context => {
+  const [userRes, reposRes] = await Promise.all([
+    fetch("https://api.github.com/users/arthurpeixotomelo"),
+    fetch("https://api.github.com/user/repos", {
+      method: "get",
+      headers: {
+        Authorization: process.env.GIT_TOKEN as string,
+      },
+    }),
+  ]);
+  const [userdata, reposdata] = await Promise.all([
+    userRes.json(),
+    reposRes.json(),
+  ]);
+  return {
+    props: {
+      context,
+      user: (({
+        avatar_url,
+        name,
+        bio,
+        location,
+        public_repos,
+        followers,
+        following,
+      }) => ({
+        avatar_url,
+        name,
+        bio,
+        location,
+        public_repos,
+        followers,
+        following,
+      }))(userdata),
+      repos: reposdata.map((item: any) => ({
+        name: item.name,
+        private: item.private,
+        homepage: item.homepage,
+        topics: item.topics,
+      })),
+    },
+    revalidate: 60 * 60 * 24 * 7,
+  };
 };
 
 export default Home;

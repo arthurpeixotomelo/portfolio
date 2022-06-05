@@ -1,7 +1,7 @@
 import { Repo } from "../types";
 import styles from "../styles/Iframe.module.css";
 
-const Projects = ({ repo }: Repo) => {
+const Iframe = ({ repo }: Repo) => {
   return (
     <div className={styles.card}>
       <div
@@ -24,4 +24,4 @@ const Projects = ({ repo }: Repo) => {
   );
 };
 
-export default Projects;
+export default Iframe;

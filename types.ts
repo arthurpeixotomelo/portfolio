@@ -1,6 +1,7 @@
 
 
 export type Props = {
+  context: any,
   user: {
     avatar_url: string;
     name: string;
@@ -17,8 +18,7 @@ export type Props = {
       homepage: string | null;
       topics: [];
     }
-  ],
-  reposdata: []
+  ]
 };
 
 export type Repo = {
