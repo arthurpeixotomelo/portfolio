@@ -2,11 +2,12 @@ import { MouseEvent, useState, useEffect } from "react";
 import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import Head from "next/head";
 
 import { Props } from "../types";
-import styles from "../styles/Home.module.css";
 import Tech from "../components/tech";
 import Iframe from "../components/iframe";
+import styles from "../styles/Home.module.css";
 
 const Home: NextPage<Props> = ({ user, repos }) => {
   const ptBR = {
@@ -57,6 +58,9 @@ const Home: NextPage<Props> = ({ user, repos }) => {
   };
   return (
     <div className={styles.background}>
+    <Head>
+    <meta name="title" content="Web Developer Portfolio | Arthur Peixoto Melo" />
+    </Head>
       <header className={styles.header}>
         <div className={styles.profile}>
           <div className={styles.photo}>
