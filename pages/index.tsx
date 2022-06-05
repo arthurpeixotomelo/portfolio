@@ -59,7 +59,10 @@ const Home: NextPage<Props> = ({ user, repos }) => {
   return (
     <div className={styles.background}>
     <Head>
-    <meta name="title" content="Web Developer Portfolio | Arthur Peixoto Melo" />
+      <title>Web Developer Portfolio | Arthur Peixoto Melo </title>
+      <meta
+          name="description"
+          content="Portfolio de Web Developer"/>
     </Head>
       <header className={styles.header}>
         <div className={styles.profile}>
