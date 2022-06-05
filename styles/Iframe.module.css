@@ -6,7 +6,7 @@
   overflow: hidden;
   border-radius: var(--b2);
   border: solid var(--mspace1) var(--cardcolor);
-  background-color: var(--cardcolor);
+  background: var(--cardcolor);
   box-shadow: var(--glasshadow);
 }
 
@@ -15,10 +15,11 @@
     position: absolute;
     z-index: -1;
     inset: 50%;
-    opacity: 0.5;
+    opacity: 0.2;
 }
 
 .thumbnail {
+  background-color: white;
   transform: scale(0.355);
   transform-origin: 0 0;
 }
